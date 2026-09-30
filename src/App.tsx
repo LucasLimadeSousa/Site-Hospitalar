@@ -4,8 +4,8 @@ import { Login } from './pages/Login';
 import { Dashboard } from './pages/Dashboard';
 import { BuscaCirurgia } from './pages/BuscaCirurgia';
 import { Distribuicao } from './pages/Distribuicao';
-import { Opme } from './pages/Opme';              // <-- Importando OPME
-import { Equipamentos } from './pages/Equipamentos'; // <-- Importando Centro Cirúrgico
+import { Opme } from './pages/Opme';
+import { Equipamentos } from './pages/Equipamentos';
 
 function App() {
   return (

@@ -6,7 +6,7 @@ export function Distribuicao() {
   const location = useLocation();
   const navigate = useNavigate();
   
-  // Resgata os dados da cirurgia vindos da Tela de Busca
+  // resgata os dados da cirurgia vindos da busca
   const surgery = location.state?.surgery || {
     code: 'CIR-002',
     patientName: 'João Santos',
@@ -25,18 +25,16 @@ export function Distribuicao() {
   const handleValidateAndDistribute = (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Cálculo P90 + 20 min fixos de turnover (RF04.6)
+    // cálculo P90 + 20 min fixos de turnover 
     const turnoverMinutes = 20;
     const totalTimeNeeded = surgery.durationMinutes + turnoverMinutes;
 
-    // Simulação de regra de conflito (RF04.8): Se a meta de ocupação for muito baixa
     if (occupancyGoal < 75 && totalTimeNeeded > 120) {
       setShowConflictModal(true);
       setCalculatedRooms(null);
       return;
     }
 
-    // Retorno de salas via algoritmo guloso simulado (RF04.7)
     setCalculatedRooms([
       {
         roomName: 'Sala 01 - Centro Cirúrgico Bloco A',
@@ -48,7 +46,6 @@ export function Distribuicao() {
   };
 
     const handleConfirmBooking = () => {
-    // Texto ajustado com linguagem formal de negócio
     alert(`Pré-agendamento confirmado com sucesso para ${surgery.patientName}! A solicitação foi transferida para a aba "Agendadas" no painel principal.`);
     navigate('/dashboard');
     };
@@ -63,7 +60,6 @@ export function Distribuicao() {
         <p className="text-sm text-slate-500 mt-1">Configure os filtros abaixo para validar e distribuir as salas de acordo com a ocupação e disponibilidade.</p>
       </div>
 
-      {/* Formulário de Filtros limpo, sem travas redundantes */}
       <div className="bg-white rounded-xl p-6 shadow-sm border border-slate-200 mb-8">
         <form onSubmit={handleValidateAndDistribute} className="grid grid-cols-1 md:grid-cols-4 gap-6 items-end">
           
@@ -111,7 +107,6 @@ export function Distribuicao() {
           </div>
 
           <div>
-            {/* Botão Validar e Distribuir ativo e pronto para uso */}
             <button
               type="submit"
               className="w-full rounded-lg bg-brand py-3 font-semibold text-white shadow-md flex items-center justify-center gap-2 hover:bg-emerald-700 transition-colors"
@@ -124,7 +119,6 @@ export function Distribuicao() {
         </form>
       </div>
 
-      {/* Resultados do Cálculo (RF04.7) */}
       {calculatedRooms && (
         <div className="space-y-4 animate-fadeIn">
           <h3 className="text-lg font-bold text-slate-800 flex items-center gap-2">
@@ -160,7 +154,6 @@ export function Distribuicao() {
         </div>
       )}
 
-      {/* Pop-up de Conflito de Horário (RF04.8) */}
       {showConflictModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm animate-fadeIn">
           <div className="w-full max-w-sm rounded-xl bg-white p-6 shadow-xl border border-red-100 text-center">

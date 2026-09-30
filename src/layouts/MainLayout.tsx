@@ -13,7 +13,6 @@ export function MainLayout() {
 
   return (
     <div className="flex h-screen bg-slate-50">
-      {/* Barra Lateral com o tom slate-800 */}
       <aside className="w-64 bg-slate-800 text-white flex flex-col justify-between">
         <div>
           <div className="p-6 border-b border-slate-700">

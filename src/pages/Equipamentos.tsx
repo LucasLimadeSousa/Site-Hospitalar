@@ -48,7 +48,7 @@ export function Equipamentos() {
     }
   ]);
 
-  // Estado para controlar qual grupo está aberto no pop-up de confirmação
+  // estado para controlar qual grupo está aberto no pop-up de confirmação
   const [targetGroupId, setTargetGroupId] = useState<string | null>(null);
 
   const confirmValidation = () => {
@@ -68,7 +68,6 @@ export function Equipamentos() {
 
   return (
     <div className="p-8 max-w-7xl mx-auto">
-      {/* Cabeçalho */}
       <div className="mb-6 flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold text-slate-800 flex items-center gap-3">
@@ -83,13 +82,11 @@ export function Equipamentos() {
         </div>
       </div>
 
-      {/* Alerta de Instrução */}
       <div className="mb-6 rounded-xl bg-sky-50 p-4 border border-sky-200 flex items-center gap-3 text-sky-800">
         <ShieldCheck className="h-6 w-6 text-brand shrink-0" />
         <p className="text-sm font-medium">Revise os equipamentos solicitados para cada cirurgia e valide a higienização e disponibilidade antes do procedimento.</p>
       </div>
 
-      {/* Lista de Grupos de Equipamentos */}
       <div className="space-y-6">
         {groups.map(group => {
           const hasPending = group.items.some(i => i.status === 'Pendente');
@@ -125,7 +122,6 @@ export function Equipamentos() {
                 ))}
               </div>
 
-              {/* Botão de Validação que agora aciona o pop-up */}
               <div className="lg:col-span-2 flex flex-col justify-center">
                 {hasPending ? (
                   <div className="space-y-2">
@@ -133,7 +129,7 @@ export function Equipamentos() {
                       <AlertTriangle className="h-4 w-4 shrink-0" /> Há pendências
                     </div>
                     <button
-                      onClick={() => setTargetGroupId(group.id)} // Abre o pop-up de confirmação
+                      onClick={() => setTargetGroupId(group.id)} // abre o pop-up de confirmação
                       className="w-full rounded-lg bg-brand py-2 text-xs font-semibold text-white hover:bg-emerald-700 transition-colors shadow-sm flex items-center justify-center gap-1.5"
                     >
                       <CheckCircle2 className="h-4 w-4" /> Validar Tudo
@@ -154,7 +150,6 @@ export function Equipamentos() {
         })}
       </div>
 
-      {/* Pop-up de Confirmação de Validação dos Equipamentos */}
       {targetGroupId && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm animate-fadeIn">
           <div className="w-full max-w-md rounded-xl bg-white p-6 shadow-xl border border-slate-200 text-center">

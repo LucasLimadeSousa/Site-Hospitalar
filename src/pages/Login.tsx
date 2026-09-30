@@ -22,7 +22,6 @@ export function Login() {
   return (
     <div className="relative flex h-screen w-screen flex-col justify-between bg-slate-100 p-6">
       
-      {/* 1. Cabeçalho no Canto Superior Esquerdo (conforme o protótipo) */}
       <div className="flex items-center gap-3">
         <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-brand text-white shadow-sm">
           <Activity className="h-5 w-5" />
@@ -100,7 +99,6 @@ export function Login() {
         </div>
       </div>
 
-      {/* 3. Rodapé Externo com o texto da LGPD (conforme o protótipo) */}
       <div className="text-center text-xs text-slate-400 space-y-1">
         <p>Este é um sistema restrito para uso médico-hospitalar autorizado. Em conformidade a LGPD, todos os acessos são monitorados e registrados.</p>
         <p className="text-[11px] text-slate-400">CORE v4.12.2 • Tecnologia Hospitalar e Gestão de Agendamentos • © 2026 Hospital S/A.</p>

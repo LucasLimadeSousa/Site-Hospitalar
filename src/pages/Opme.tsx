@@ -47,7 +47,7 @@ export function Opme() {
 
   return (
     <div className="p-8 max-w-7xl mx-auto">
-      {/* Cabeçalho */}
+
       <div className="mb-8 flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold text-slate-800 flex items-center gap-3">
@@ -58,7 +58,6 @@ export function Opme() {
         </div>
       </div>
 
-      {/* Barra de Filtros */}
       <div className="bg-white rounded-xl p-4 shadow-sm border border-slate-200 mb-6 flex flex-wrap gap-4 items-center justify-between">
         <div className="flex-1 min-w-[280px] relative">
           <Search className="absolute left-3.5 top-3 h-4 w-4 text-slate-400" />
@@ -80,7 +79,6 @@ export function Opme() {
         </div>
       </div>
 
-      {/* Tabela de Demandas (RF05.1) */}
       <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
         <table className="w-full text-left border-collapse">
           <thead>
@@ -108,7 +106,7 @@ export function Opme() {
                       {item.status === 'Liberado' ? <CheckCircle className="h-3 w-3" /> : <Clock className="h-3 w-3" />}
                       {item.status === 'Liberado' ? 'Disponível' : 'Pendente'}
                     </span>
-                    {/* Toggle Switch para alterar status (RF05.3) */}
+
                     <label className="relative inline-flex items-center cursor-pointer">
                       <input 
                         type="checkbox" 
@@ -134,7 +132,6 @@ export function Opme() {
         </table>
       </div>
 
-      {/* Modal de Detalhes do Material (RF05.2) */}
       {selectedItem && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm animate-fadeIn">
           <div className="w-full max-w-lg rounded-xl bg-white p-6 shadow-xl border border-slate-200">

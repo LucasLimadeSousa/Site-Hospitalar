@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Clock, CheckCircle2, AlertCircle, ArrowRight } from 'lucide-react';
 
-// Exemplo de tipo para os dados da cirurgia
 interface SurgeryCard {
   id: string;
   code: string;
@@ -18,7 +17,6 @@ interface SurgeryCard {
 export function Dashboard() {
   const navigate = useNavigate();
 
-  // Estado inicial simulando os cards nas colunas do Kanban
   const [cards, setCards] = useState<SurgeryCard[]>([
     {
       id: '1',
@@ -51,7 +49,6 @@ export function Dashboard() {
     },
   ]);
 
-  // Função auxiliar para cor das tags de status
   const getStatusBadge = (status: 'Liberado' | 'Pendente' | 'Não Aplicável') => {
     switch (status) {
       case 'Liberado':
@@ -63,7 +60,6 @@ export function Dashboard() {
     }
   };
 
-  // Separação dos cards por coluna do Kanban (RF02.2)
   const waitingCards = cards.filter(c => c.column === 'aguardando');
   const readyCards = cards.filter(c => c.column === 'prontas');
   const scheduledCards = cards.filter(c => c.column === 'agendadas');
@@ -75,10 +71,8 @@ export function Dashboard() {
         <p className="text-sm text-slate-500">Acompanhamento do fluxo cirúrgico</p>
       </div>
 
-      {/* Grid de 3 Colunas do Kanban (RF02.2) */}
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         
-        {/* COLUNA 1: Aguardando Liberação */}
         <div className="flex flex-col rounded-xl bg-slate-100 p-4 border border-slate-200">
           <div className="mb-4 flex items-center justify-between">
             <h2 className="font-semibold text-slate-700 flex items-center gap-2">
@@ -99,7 +93,6 @@ export function Dashboard() {
                 </div>
                 <p className="text-sm font-medium text-slate-700 mb-3">{card.patientName}</p>
                 
-                {/* Indicadores individuais de OPME e Equipamentos (RF02.4) */}
                 <div className="space-y-1.5 text-xs text-slate-600 border-t border-slate-100 pt-2 mb-3">
                   <div className="flex justify-between items-center">
                     <span>OPME:</span>
@@ -111,7 +104,6 @@ export function Dashboard() {
                   </div>
                 </div>
 
-                {/* Botão de agendar bloqueado por pendência (Trava Positiva) */}
                 <button
                   disabled
                   className="w-full rounded-lg bg-slate-100 py-2 text-xs font-semibold text-slate-400 cursor-not-allowed flex items-center justify-center gap-1"
@@ -126,7 +118,6 @@ export function Dashboard() {
           </div>
         </div>
 
-        {/* COLUNA 2: Prontas para Agendamento */}
         <div className="flex flex-col rounded-xl bg-slate-100 p-4 border border-slate-200">
           <div className="mb-4 flex items-center justify-between">
             <h2 className="font-semibold text-slate-700 flex items-center gap-2">
@@ -158,7 +149,6 @@ export function Dashboard() {
                   </div>
                 </div>
 
-                {/* Botão ativo permitindo iniciar o agendamento indo direto para a Distribuição */}
                 <button
                     onClick={() => navigate('/distribuicao', { state: { surgery: { code: card.code, patientName: card.patientName, porteLabel: 'Porte Médio (90 min)', durationMinutes: 90, supplier: 'Fornecedor Padrão' } } })}
                     className="w-full rounded-lg bg-brand py-2 text-xs font-semibold text-white hover:bg-emerald-700 transition-colors flex items-center justify-center gap-1 shadow-sm"
@@ -173,7 +163,6 @@ export function Dashboard() {
           </div>
         </div>
 
-        {/* COLUNA 3: Agendadas */}
         <div className="flex flex-col rounded-xl bg-slate-100 p-4 border border-slate-200">
           <div className="mb-4 flex items-center justify-between">
             <h2 className="font-semibold text-slate-700 flex items-center gap-2">
@@ -195,7 +184,6 @@ export function Dashboard() {
                 <p className="text-sm font-medium text-slate-700 mb-1">{card.patientName}</p>
                 <p className="text-xs text-slate-500 mb-3">Data: {card.scheduledDate}</p>
 
-                {/* Opção de Cliente Confirmado (RF02.8) */}
                 <div className="border-t border-slate-100 pt-3">
                   <label className="flex items-center gap-2 text-xs font-medium text-slate-700 cursor-pointer">
                     <input 

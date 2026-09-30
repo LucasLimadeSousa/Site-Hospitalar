@@ -84,7 +84,7 @@ export function BuscaCirurgia() {
     }
   };
 
-  // Verifica se há alguma pendência bloqueadora
+  // verifica se há alguma pendência bloqueadora
   const hasPendingItems = surgeryData 
     ? surgeryData.opmeStatus === 'Pendente' || surgeryData.equipmentStatus === 'Pendente'
     : false;
@@ -191,7 +191,6 @@ export function BuscaCirurgia() {
                   </div>
                 </div>
 
-                {/* Botão com Trava Positiva: Bloqueado se houver pendência */}
                 <button
                   onClick={() => navigate('/distribuicao', { state: { surgery: surgeryData } })}
                   disabled={hasPendingItems}

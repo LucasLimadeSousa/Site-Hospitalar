@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
 @theme {
-  --color-brand: #00995D;   /* Verde institucional Unimed */
-  --color-sidebar: #1e293b; /* Azul escuro da barra lateral do protótipo */
+  --color-brand: #00995D;   /* verde institucional unimed */
+  --color-sidebar: #1e293b; /* azul escuro */
 }
