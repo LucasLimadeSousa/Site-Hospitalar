@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 @theme {
-  --color-brand: #246fd4;   /* Azul corporativo atual */
+  --color-brand: #246fd4;
   --color-sidebar: #1e293b; 
 }
 
