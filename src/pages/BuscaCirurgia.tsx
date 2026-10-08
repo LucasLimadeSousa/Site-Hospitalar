@@ -84,7 +84,6 @@ export function BuscaCirurgia() {
     }
   };
 
-  // verifica se há alguma pendência bloqueadora
   const hasPendingItems = surgeryData 
     ? surgeryData.opmeStatus === 'Pendente' || surgeryData.equipmentStatus === 'Pendente'
     : false;
@@ -123,7 +122,7 @@ export function BuscaCirurgia() {
           </div>
           <button
             type="submit"
-            className="rounded-lg bg-brand px-6 py-3 font-semibold text-white transition-colors hover:bg-emerald-700 shadow-md flex items-center gap-2"
+            className="btn-primary px-6 py-3 flex items-center gap-2 w-auto"
           >
             <Search className="h-5 w-5" />
             Buscar
@@ -197,7 +196,7 @@ export function BuscaCirurgia() {
                   className={`w-full rounded-lg py-2.5 text-sm font-semibold text-white shadow-sm flex items-center justify-center gap-2 transition-colors ${
                     hasPendingItems 
                       ? 'bg-slate-300 text-slate-500 cursor-not-allowed' 
-                      : 'bg-brand hover:bg-emerald-700'
+                      : 'btn-primary'
                   }`}
                 >
                   {hasPendingItems ? <Lock className="h-4 w-4" /> : <ArrowRight className="h-4 w-4" />}

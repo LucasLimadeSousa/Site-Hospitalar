@@ -6,7 +6,6 @@ export function Distribuicao() {
   const location = useLocation();
   const navigate = useNavigate();
   
-  // resgata os dados da cirurgia vindos da busca
   const surgery = location.state?.surgery || {
     code: 'CIR-002',
     patientName: 'João Santos',
@@ -25,7 +24,6 @@ export function Distribuicao() {
   const handleValidateAndDistribute = (e: React.FormEvent) => {
     e.preventDefault();
 
-    // cálculo P90 + 20 min fixos de turnover 
     const turnoverMinutes = 20;
     const totalTimeNeeded = surgery.durationMinutes + turnoverMinutes;
 
@@ -45,10 +43,10 @@ export function Distribuicao() {
     ]);
   };
 
-    const handleConfirmBooking = () => {
+  const handleConfirmBooking = () => {
     alert(`Pré-agendamento confirmado com sucesso para ${surgery.patientName}! A solicitação foi transferida para a aba "Agendadas" no painel principal.`);
     navigate('/dashboard');
-    };
+  };
 
   return (
     <div className="p-8 max-w-6xl mx-auto">
@@ -109,7 +107,7 @@ export function Distribuicao() {
           <div>
             <button
               type="submit"
-              className="w-full rounded-lg bg-brand py-3 font-semibold text-white shadow-md flex items-center justify-center gap-2 hover:bg-emerald-700 transition-colors"
+              className="btn-primary py-3 flex items-center justify-center gap-2"
             >
               <CheckCircle2 className="h-5 w-5" />
               Validar e Distribuir
@@ -143,7 +141,7 @@ export function Distribuicao() {
 
                   <button
                     onClick={handleConfirmBooking}
-                    className="rounded-lg bg-brand px-5 py-2.5 text-sm font-semibold text-white hover:bg-emerald-700 shadow-sm flex items-center gap-2"
+                    className="btn-primary px-5 py-2.5 text-sm flex items-center gap-2"
                   >
                     Confirmar Pré-agendamento <ArrowRight className="h-4 w-4" />
                   </button>

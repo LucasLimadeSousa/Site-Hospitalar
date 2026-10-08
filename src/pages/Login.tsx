@@ -33,7 +33,6 @@ export function Login() {
         </div>
       </div>
 
-      {/* 2. Card Centralizado de Login */}
       <div className="flex flex-1 items-center justify-center">
         <div className="w-full max-w-md rounded-xl bg-white p-8 shadow-lg border border-slate-200">
           
@@ -91,7 +90,7 @@ export function Login() {
 
             <button
               type="submit"
-              className="w-full rounded-lg bg-brand py-3 font-semibold text-white transition-colors hover:bg-emerald-700 shadow-md"
+              className="btn-primary"
             >
               Entrar
             </button>

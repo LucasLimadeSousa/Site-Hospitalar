@@ -73,6 +73,7 @@ export function Dashboard() {
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         
+        {/* Coluna 1 */}
         <div className="flex flex-col rounded-xl bg-slate-100 p-4 border border-slate-200">
           <div className="mb-4 flex items-center justify-between">
             <h2 className="font-semibold text-slate-700 flex items-center gap-2">
@@ -118,6 +119,7 @@ export function Dashboard() {
           </div>
         </div>
 
+        {/* Coluna 2 */}
         <div className="flex flex-col rounded-xl bg-slate-100 p-4 border border-slate-200">
           <div className="mb-4 flex items-center justify-between">
             <h2 className="font-semibold text-slate-700 flex items-center gap-2">
@@ -150,10 +152,10 @@ export function Dashboard() {
                 </div>
 
                 <button
-                    onClick={() => navigate('/distribuicao', { state: { surgery: { code: card.code, patientName: card.patientName, porteLabel: 'Porte Médio (90 min)', durationMinutes: 90, supplier: 'Fornecedor Padrão' } } })}
-                    className="w-full rounded-lg bg-brand py-2 text-xs font-semibold text-white hover:bg-emerald-700 transition-colors flex items-center justify-center gap-1 shadow-sm"
+                  onClick={() => navigate('/distribuicao', { state: { surgery: { code: card.code, patientName: card.patientName, porteLabel: 'Porte Médio (90 min)', durationMinutes: 90, supplier: 'Fornecedor Padrão' } } })}
+                  className="btn-primary w-full py-2 text-xs flex items-center justify-center gap-1"
                 >
-                    Iniciar Agendamento <ArrowRight className="h-3 w-3" />
+                  Iniciar Agendamento <ArrowRight className="h-3 w-3" />
                 </button>
               </div>
             ))}
@@ -163,6 +165,7 @@ export function Dashboard() {
           </div>
         </div>
 
+        {/* Coluna 3 */}
         <div className="flex flex-col rounded-xl bg-slate-100 p-4 border border-slate-200">
           <div className="mb-4 flex items-center justify-between">
             <h2 className="font-semibold text-slate-700 flex items-center gap-2">
@@ -187,12 +190,12 @@ export function Dashboard() {
                 <div className="border-t border-slate-100 pt-3">
                   <label className="flex items-center gap-2 text-xs font-medium text-slate-700 cursor-pointer">
                     <input 
-                        type="checkbox" 
-                        checked={card.isConfirmedByClient} 
-                        onChange={() => {
-                            alert("Confirmação de atendimento registrada com sucesso! O processo foi concluído.");
-                        }}
-                        className="rounded border-slate-300 text-brand focus:ring-brand"
+                      type="checkbox" 
+                      checked={card.isConfirmedByClient} 
+                      onChange={() => {
+                        alert("Confirmação de atendimento registrada com sucesso! O processo foi concluído.");
+                      }}
+                      className="rounded border-slate-300 text-brand focus:ring-brand"
                     />
                     Cliente Confirmado (24h)
                   </label>

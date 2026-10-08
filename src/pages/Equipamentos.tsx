@@ -48,7 +48,6 @@ export function Equipamentos() {
     }
   ]);
 
-  // estado para controlar qual grupo está aberto no pop-up de confirmação
   const [targetGroupId, setTargetGroupId] = useState<string | null>(null);
 
   const confirmValidation = () => {
@@ -129,8 +128,8 @@ export function Equipamentos() {
                       <AlertTriangle className="h-4 w-4 shrink-0" /> Há pendências
                     </div>
                     <button
-                      onClick={() => setTargetGroupId(group.id)} // abre o pop-up de confirmação
-                      className="w-full rounded-lg bg-brand py-2 text-xs font-semibold text-white hover:bg-emerald-700 transition-colors shadow-sm flex items-center justify-center gap-1.5"
+                      onClick={() => setTargetGroupId(group.id)}
+                      className="btn-primary w-full py-2 text-xs flex items-center justify-center gap-1.5"
                     >
                       <CheckCircle2 className="h-4 w-4" /> Validar Tudo
                     </button>
@@ -169,7 +168,7 @@ export function Equipamentos() {
               </button>
               <button
                 onClick={confirmValidation}
-                className="flex-1 rounded-lg bg-brand px-4 py-2.5 text-sm font-semibold text-white hover:bg-emerald-700 transition-colors shadow-sm"
+                className="btn-primary flex-1 py-2.5 text-sm"
               >
                 Sim, Confirmar
               </button>
