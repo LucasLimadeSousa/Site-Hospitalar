@@ -1,1 +1,16 @@
 @import "tailwindcss";
+
+@theme {
+  --color-brand: #246fd4;
+  --color-sidebar: #1e293b; 
+}
+
+@layer components {
+  .btn-primary {
+    @apply w-full rounded-lg bg-brand py-3 font-semibold text-white shadow-md transition-colors;
+    background-color: var(--color-brand);
+  }
+  .btn-primary:hover {
+    background-color: #1b58ab;
+  }
+}
