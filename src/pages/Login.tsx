@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Eye, EyeOff, Lock, Mail, Activity } from 'lucide-react';
+import { Eye, EyeOff, Lock, UserCheck, Activity } from 'lucide-react';
 
 export function Login() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [credential, setCredential] = useState(''); // Iniciando vazio
+  const [password, setPassword] = useState('');     // Iniciando vazio
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const navigate = useNavigate();
@@ -12,10 +12,11 @@ export function Login() {
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (email === 'core@unimed.com' && password === '123456') {
+    // Validação de exemplo (exige a credencial 2510412 e senha 123456)
+    if (credential === '2510412' && password === '123456') {
       navigate('/dashboard');
     } else {
-      setError('E-mail ou senha inválidos');
+      setError('Credencial ou senha inválidos');
     }
   };
 
@@ -52,15 +53,15 @@ export function Login() {
 
           <form onSubmit={handleLogin} className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">E-mail</label>
+              <label className="block text-sm font-medium text-slate-700 mb-1">Credencial (Matrícula)</label>
               <div className="relative">
-                <Mail className="absolute left-3 top-3 h-5 w-5 text-slate-400" />
+                <UserCheck className="absolute left-3 top-3 h-5 w-5 text-slate-400" />
                 <input
-                  type="email"
+                  type="text"
                   required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="seu.email@unimed.com"
+                  value={credential}
+                  onChange={(e) => setCredential(e.target.value)}
+                  placeholder="Digite sua credencial"
                   className="w-full rounded-lg border border-slate-300 py-2.5 pl-10 pr-4 text-slate-800 focus:border-brand focus:outline-none"
                 />
               </div>
