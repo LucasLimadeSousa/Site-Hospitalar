@@ -1,16 +1,21 @@
 
-
 import express from "express";
+import cors from "cors";
+import helmet from "helmet";
+import authRoutes from "./routes/auth.routes.js";
 
 const app = express();
 
-app.use(express.json());
+app.use(helmet());
 
-app.get("/health", (_req, res) => {
-  res.status(200).json({
-    status: "ok",
-    message: "API do sistema hospitalar funcionando"
-  });
-});
+app.use(
+  cors({
+    origin: process.env.FRONTEND_URL || "http://localhost:5173"
+  })
+);
+
+app.use(express.json({ limit: "10kb" }));
+
+app.use("/auth", authRoutes);
 
 export default app;
