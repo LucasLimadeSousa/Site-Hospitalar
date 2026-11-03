@@ -29,6 +29,45 @@ interface OpmeRow {
   }>;
 }
 
+const STATUS_QUE_PERMITEM_ALTERACAO = [
+  "aguardando_liberacao",
+  "pronta_para_agendamento",
+] as const;
+
+async function verificarPermissaoAlteracao(agendamentoId: string) {
+  const { data: agendamento, error } = await supabase
+    .from("agendamentos")
+    .select("status_kanban")
+    .eq("id", agendamentoId)
+    .maybeSingle();
+
+  if (error) {
+    console.error("Erro ao verificar status da cirurgia:", error.message);
+
+    return {
+      permitido: false,
+      erro: true,
+    };
+  }
+
+  if (!agendamento) {
+    return {
+      permitido: false,
+      erro: false,
+      naoEncontrado: true,
+    };
+  }
+
+  const permitido = STATUS_QUE_PERMITEM_ALTERACAO.includes(
+    agendamento.status_kanban as (typeof STATUS_QUE_PERMITEM_ALTERACAO)[number]
+  );
+
+  return {
+    permitido,
+    erro: false,
+  };
+}
+
 // Lista as solicitações reais de OPME.
 router.get(
   "/",
@@ -195,6 +234,23 @@ router.post(
         });
       }
 
+      // Impede alterações após a distribuição.
+      const permissao = await verificarPermissaoAlteracao(agendamentoId);
+
+      if (permissao.erro) {
+        return res.status(500).json({
+          status: "error",
+          message: "Não foi possível verificar se a cirurgia permite alterações.",
+        });
+      }
+
+      if (!permissao.permitido) {
+        return res.status(409).json({
+          status: "error",
+          message: "Esta cirurgia não permite mais alterações no OPME.",
+        });
+      }
+
       // Confere se todos os materiais pertencem ao procedimento.
       const { data: materiaisCatalogo, error: catalogoError } = await supabase
         .from("catalogo_materiais")
@@ -341,6 +397,47 @@ router.patch(
         return res.status(400).json({
           status: "error",
           message: "Status inválido.",
+        });
+      }
+
+      // Consulta a solicitação para identificar a cirurgia vinculada.
+      const { data: solicitacaoAtual, error: consultaError } = await supabase
+        .from("solicitacoes_opme")
+        .select("id, agendamento_id")
+        .eq("id", id)
+        .maybeSingle();
+
+      if (consultaError) {
+        console.error("Erro ao consultar solicitação de OPME:", consultaError.message);
+        return res.status(500).json({
+          status: "error",
+          message: "Não foi possível consultar a solicitação.",
+        });
+      }
+
+      if (!solicitacaoAtual) {
+        return res.status(404).json({
+          status: "error",
+          message: "Solicitação de OPME não encontrada.",
+        });
+      }
+
+      // Impede alterações após a distribuição.
+      const permissao = await verificarPermissaoAlteracao(
+        solicitacaoAtual.agendamento_id
+      );
+
+      if (permissao.erro) {
+        return res.status(500).json({
+          status: "error",
+          message: "Não foi possível verificar se a cirurgia permite alterações.",
+        });
+      }
+
+      if (!permissao.permitido) {
+        return res.status(409).json({
+          status: "error",
+          message: "Esta cirurgia não permite mais alterações no OPME.",
         });
       }
 

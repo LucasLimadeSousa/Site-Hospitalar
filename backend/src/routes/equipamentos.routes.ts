@@ -1,3 +1,4 @@
+
 import { Router, type Response } from "express";
 
 import { supabase } from "../config/supabase.js";
@@ -16,6 +17,51 @@ function firstRelation<T>(value: Relation<T> | undefined): T | null {
   }
 
   return value ?? null;
+}
+
+const STATUS_QUE_PERMITEM_ALTERACAO = [
+  "aguardando_liberacao",
+  "pronta_para_agendamento"
+];
+
+async function verificarPermissaoAlteracao(agendamentoId: string) {
+  const { data, error } = await supabase
+    .from("agendamentos")
+    .select("status_kanban")
+    .eq("id", agendamentoId)
+    .maybeSingle();
+
+  if (error) {
+    console.error("Erro ao verificar status da cirurgia:", error.message);
+
+    return {
+      permitido: false,
+      statusCode: 500,
+      message: "Não foi possível verificar o status da cirurgia."
+    };
+  }
+
+  if (!data) {
+    return {
+      permitido: false,
+      statusCode: 404,
+      message: "Cirurgia não encontrada."
+    };
+  }
+
+  if (!STATUS_QUE_PERMITEM_ALTERACAO.includes(data.status_kanban)) {
+    return {
+      permitido: false,
+      statusCode: 409,
+      message: "Esta cirurgia não permite mais alterações nos equipamentos."
+    };
+  }
+
+  return {
+    permitido: true,
+    statusCode: 200,
+    message: ""
+  };
 }
 
 /*
@@ -215,12 +261,6 @@ router.get(
  * POST /equipamentos
  *
  * Vincula equipamentos cadastrados a uma cirurgia.
- *
- * Body:
- * {
- *   "agendamento_id": "uuid",
- *   "equipamento_ids": ["uuid", "uuid"]
- * }
  */
 router.post(
   "/",
@@ -234,9 +274,10 @@ router.post(
 
       if (
         typeof agendamento_id !== "string" ||
+        !agendamento_id.trim() ||
         !Array.isArray(equipamento_ids) ||
         equipamento_ids.length === 0 ||
-        !equipamento_ids.every(id => typeof id === "string")
+        !equipamento_ids.every(id => typeof id === "string" && id.trim())
       ) {
         return res.status(400).json({
           status: "error",
@@ -244,7 +285,7 @@ router.post(
         });
       }
 
-      const idsUnicos = [...new Set(equipamento_ids)];
+      const idsUnicos = [...new Set(equipamento_ids.map(id => id.trim()))];
 
       if (idsUnicos.length !== equipamento_ids.length) {
         return res.status(400).json({
@@ -253,10 +294,12 @@ router.post(
         });
       }
 
+      const agendamentoId = agendamento_id.trim();
+
       const { data: agendamento, error: agendamentoError } = await supabase
         .from("agendamentos")
-        .select("id, hospital_id")
-        .eq("id", agendamento_id)
+        .select("id, hospital_id, status_kanban")
+        .eq("id", agendamentoId)
         .maybeSingle();
 
       if (agendamentoError) {
@@ -272,6 +315,15 @@ router.post(
         return res.status(404).json({
           status: "error",
           message: "Cirurgia não encontrada."
+        });
+      }
+
+      const permissao = await verificarPermissaoAlteracao(agendamentoId);
+
+      if (!permissao.permitido) {
+        return res.status(permissao.statusCode).json({
+          status: "error",
+          message: permissao.message
         });
       }
 
@@ -319,7 +371,7 @@ router.post(
       const { data: existentes, error: existentesError } = await supabase
         .from("solicitacoes_equipamentos")
         .select("equipamento_id")
-        .eq("agendamento_id", agendamento_id)
+        .eq("agendamento_id", agendamentoId)
         .in("equipamento_id", idsUnicos);
 
       if (existentesError) {
@@ -339,7 +391,7 @@ router.post(
       }
 
       const novosRegistros = idsUnicos.map(equipamentoId => ({
-        agendamento_id,
+        agendamento_id: agendamentoId,
         equipamento_id: equipamentoId,
         status: "pendente",
         higienizado_e_disponivel: false
@@ -362,7 +414,7 @@ router.post(
       const { error: parentError } = await supabase
         .from("agendamentos")
         .update({ status_equipamento: "pendente" })
-        .eq("id", agendamento_id);
+        .eq("id", agendamentoId);
 
       if (parentError) {
         console.error("Erro ao atualizar status da cirurgia:", parentError.message);
@@ -417,6 +469,39 @@ router.patch(
         return res.status(400).json({
           status: "error",
           message: "Informe se o equipamento está higienizado e disponível."
+        });
+      }
+
+      const { data: solicitacaoExistente, error: consultaError } = await supabase
+        .from("solicitacoes_equipamentos")
+        .select("id, agendamento_id")
+        .eq("id", id)
+        .maybeSingle();
+
+      if (consultaError) {
+        console.error("Erro ao consultar solicitação:", consultaError.message);
+
+        return res.status(500).json({
+          status: "error",
+          message: "Não foi possível consultar a solicitação."
+        });
+      }
+
+      if (!solicitacaoExistente) {
+        return res.status(404).json({
+          status: "error",
+          message: "Solicitação de equipamento não encontrada."
+        });
+      }
+
+      const permissao = await verificarPermissaoAlteracao(
+        solicitacaoExistente.agendamento_id
+      );
+
+      if (!permissao.permitido) {
+        return res.status(permissao.statusCode).json({
+          status: "error",
+          message: permissao.message
         });
       }
 
