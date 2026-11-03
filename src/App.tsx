@@ -1,4 +1,6 @@
+
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+
 import { MainLayout } from './layouts/MainLayout';
 import { Login } from './pages/Login';
 import { Dashboard } from './pages/Dashboard';
@@ -7,20 +9,45 @@ import { Distribuicao } from './pages/Distribuicao';
 import { Opme } from './pages/Opme';
 import { Equipamentos } from './pages/Equipamentos';
 
+import { ProtectedRoute } from './components/ProtectedRoute';
+import { GuestRoute } from './components/GuestRoute';
+
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Navigate to="/login" replace />} />
-        <Route path="/login" element={<Login />} />
+        <Route
+          path="/"
+          element={<Navigate to="/login" replace />}
+        />
 
-        <Route element={<MainLayout />}>
-          <Route path="dashboard" element={<Dashboard />} />
-          <Route path="busca" element={<BuscaCirurgia />} />
-          <Route path="distribuicao" element={<Distribuicao />} />
-          <Route path="opme" element={<Opme />} />
-          <Route path="cc" element={<Equipamentos />} />
+        <Route
+          path="/login"
+          element={
+            <GuestRoute>
+              <Login />
+            </GuestRoute>
+          }
+        />
+
+        <Route
+          element={
+            <ProtectedRoute>
+              <MainLayout />
+            </ProtectedRoute>
+          }
+        >
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/busca" element={<BuscaCirurgia />} />
+          <Route path="/distribuicao" element={<Distribuicao />} />
+          <Route path="/opme" element={<Opme />} />
+          <Route path="/cc" element={<Equipamentos />} />
         </Route>
+
+        <Route
+          path="*"
+          element={<Navigate to="/login" replace />}
+        />
       </Routes>
     </BrowserRouter>
   );

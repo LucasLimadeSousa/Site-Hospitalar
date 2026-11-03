@@ -3,11 +3,16 @@ import { Router, type Request, type Response } from "express";
 import { rateLimit } from "express-rate-limit";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+
 import { supabase } from "../config/supabase.js";
-import { authenticateToken, type AuthenticatedRequest } from "../middlewares/auth.middleware.js";
+import {
+  authenticateToken,
+  type AuthenticatedRequest
+} from "../middlewares/auth.middleware.js";
 
 const router = Router();
 
+// Limita tentativas excessivas de login.
 const loginLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   limit: 10,
@@ -19,6 +24,8 @@ const loginLimiter = rateLimit({
   }
 });
 
+// POST /auth/login
+// Rota pública: autentica o usuário e gera um JWT.
 router.post(
   "/login",
   loginLimiter,
@@ -84,6 +91,7 @@ router.post(
         {},
         jwtSecret,
         {
+          algorithm: "HS256",
           subject: String(usuario.id),
           issuer: "nexus-core",
           expiresIn: "2h"
@@ -112,7 +120,8 @@ router.post(
   }
 );
 
-
+// GET /auth/me
+// Rota privada: retorna os dados do usuário autenticado.
 router.get(
   "/me",
   authenticateToken,
@@ -148,6 +157,7 @@ router.get(
           credential: usuario.credencial
         }
       });
+
     } catch (error) {
       console.error("Erro ao verificar sessão:", error);
 
@@ -158,7 +168,5 @@ router.get(
     }
   }
 );
-
-
 
 export default router;
