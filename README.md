@@ -184,6 +184,8 @@ Inicie o servidor:
 npm run dev
 ```
 
+link do site: https://site-hospitalar-front.onrender.com/dashboard
+
 **Observação:** as credenciais do Supabase e demais informações sensíveis devem ser configuradas localmente. Nunca devem ser adicionadas ao repositório.
 
 ## Equipe e desenvolvimento
